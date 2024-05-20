@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 """Helper script to be used as a pre-commit hook."""
-import os
 import sys
 import subprocess
 
@@ -14,7 +13,7 @@ def gitleaksEnabled():
 
 
 if gitleaksEnabled():
-    exitCode = os.WEXITSTATUS(os.system('gitleaks protect -v --staged'))
+    exitCode = subprocess.run(['gitleaks', 'protect', '-v', '--staged'], capture_output=True, text=True).returncode
     if exitCode == 1:
         print('''Warning: gitleaks has detected sensitive information in your changes.
 To disable the gitleaks precommit hook run the following command:
